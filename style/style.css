@@ -1,0 +1,70 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    min-height: 100vh;
+    background:url('../5386360.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.displayResult{
+    position: absolute;
+    left: 50%;
+    top: 4vh;
+    transform: translateX(-50%);
+    font-family: system-ui;
+    display: flex;
+    gap: 10px;
+    
+}
+
+.score,.HighScore{
+    color: #fff;
+    background: #19741d;
+    padding: 5px 10px;
+    border-radius: 10px;    
+    box-shadow: 0px 0px 5px #fff;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board{
+    width: 80vmin;
+    aspect-ratio: 1/1;
+    display: grid;
+    grid-template-rows: repeat(28, 1fr);
+    grid-template-columns: repeat(28, 1fr);
+    background: url('../bg.png');
+    background-repeat: no-repeat;
+    background-size: 80vmin 80vmin;
+    padding:6.7vmin  5.5vmin;
+    box-shadow: 2px 2px 4px black;
+}
+
+.snake{
+    background-color: lightcoral;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+.head{
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+.food{
+    background: yellow;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
