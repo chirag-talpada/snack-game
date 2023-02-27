@@ -32,9 +32,12 @@ body{
 }
 
 .center{
+    padding-top: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .board{
@@ -50,10 +53,16 @@ body{
     box-shadow: 2px 2px 4px black;
 }
 
-.snake{
-    background-color: lightcoral;
+.snake-p1{
+    background-color: #fff;
     border-radius: 50%;
-    border: 2px solid black;
+    border: 1px solid black;
+}
+
+.snake-p2{
+    background-color: #fff;
+    border-radius: 50%;
+    border: 1px solid black;
 }
 
 .head{
@@ -68,3 +77,73 @@ body{
     border: 2px solid black;
 }
 
+.controls{
+    height: 200px;
+    width: 200px;
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 50px;
+    border-radius: 10px;
+    display: none;
+}
+
+.controls div:hover{
+    cursor: pointer;
+}
+
+.controls div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 2px 2px 2px black;
+}
+
+.controls div:active{
+    text-shadow: 0px 0px 2px black;
+    border-radius: 50%;
+    user-select: none;
+}
+
+.middle{
+    background-color: #15c3e2;
+    border-radius: 50%;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 2px 2px black;
+}
+
+@media only screen and (min-width:1024px){
+    .center{
+       padding-top: 30px;
+    }
+}
+@media only screen and (max-width:768px){
+    .score,.HighScore{
+       font-size: 15px;
+    }
+    .controls{
+        display: grid;
+    }
+}
+
+@media only screen and (max-width:425px){
+    .score,.HighScore{
+       font-size: 13px;
+    }
+}
+
+@media only screen and (max-width:375px){
+    .score,.HighScore{
+       font-size: 11px;
+    }
+}
+
+@media only screen and (max-width:320px){
+    .score,.HighScore{
+       font-size: 9px;
+    }
+}
