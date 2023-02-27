@@ -1,12 +1,18 @@
 let speed = 5;
+let old_speed = 5;
+let speed_flag = false;
+let mobile_flag = false;
+
 let last_Timestamp = 0;
 let score_val = 0;
-let upper_bound =28;
-let isRunning=true;
+let upper_bound = 28;
+let isRunning = true;
 
 const snakeBody = [{ x: 2, y: 5 }, { x: 2, y: 6 }];
 const snakeFood = { x: 10, y: 10 }
 let snakeDir = { x: 1, y: 0 }
+
+const ControlBtn = document.querySelector('.controls');
 
 const gameBoard = document.querySelector('.board');
 const score = document.querySelector('.score');
@@ -29,9 +35,9 @@ function updateSnake() {
 
     if (isGameOver((snakeBody[0].x + snakeDir.x), (snakeBody[0].y + snakeDir.y))) {
         alert('Game Over');
-        isRunning=false;
+        isRunning = false;
 
-        if(localStorage.getItem('highScore') === null || localStorage.getItem('highScore') < score_val) {
+        if (localStorage.getItem('highScore') === null || localStorage.getItem('highScore') < score_val) {
             localStorage.setItem('highScore', score_val);
         }
 
@@ -69,7 +75,11 @@ function drawSnake() {
         if (index === 0) {
             snakeElement.classList.add('head');
         } else {
-            snakeElement.classList.add('snake');
+            if (index % 2 === 0) {
+                snakeElement.classList.add('snake-p2');
+            } else {
+                snakeElement.classList.add('snake-p1');
+            }
 
         }
 
@@ -84,9 +94,20 @@ function onFood(food) {
     return snakeBody.some(cell => cell.x === food.x && cell.y === food.y);
 }
 
+function getRandomColor() {
+    let r = Math.floor(Math.random() * 256);
+    let g = Math.floor(Math.random() * 256);
+    let b = Math.floor(Math.random() * 256);
+
+    return `rgb(${r},${g},${b})`;
+
+}
+
 function drawFood() {
     const foodElement = document.createElement('div');
-    foodElement.classList.add('food');
+    foodElement.style.backgroundColor = getRandomColor();
+    foodElement.style.border = `2px solid black`;
+    foodElement.style.borderRadius = `50%`;
     foodElement.style.gridRowStart = snakeFood.y;
     foodElement.style.gridColumnStart = snakeFood.x;
     gameBoard.appendChild(foodElement);
@@ -95,7 +116,7 @@ function drawFood() {
     if (onFood(snakeFood)) {
         score_val++;
         score.innerHTML = `Score : ${score_val}`;
-        speed++;
+        speed += 1;
         updateFood();
     }
 
@@ -106,18 +127,18 @@ function getRandomfood() {
     let x;
     let y;
 
-    while(true){
+    while (true) {
         x = Math.floor(Math.random() * upper_bound) + 1;
         y = Math.floor(Math.random() * upper_bound) + 1;
         let isOverlapFood = snakeBody.some(cell => cell.x === x && cell.y === y);
-        
-        if(!isOverlapFood){
+
+        if (!isOverlapFood) {
             break;
         }
     }
 
     return [x, y];
-    
+
 
 }
 
@@ -131,7 +152,7 @@ function updateFood() {
 }
 
 function move(time) {
-    if(isRunning){
+    if (isRunning) {
         requestAnimationFrame(move);
     }
 
@@ -161,8 +182,34 @@ function getHighestScore() {
 requestAnimationFrame(move);
 getHighestScore();
 
+let timer;
+
 window.addEventListener('keydown', e => {
 
+    if (e.key == " ") {
+        clearTimeout(timer);
+        if (!speed_flag) {
+            old_speed = speed;
+        }
+
+        if(mobile_flag){
+            speed = 59;
+            mobile_flag=false;
+        }else{
+            speed = 30;
+        }
+        speed_flag = true;
+
+        timer = setTimeout(() => {
+            speed = old_speed;
+            speed_flag = false;
+        }, 100)
+
+
+    } else {
+        speed = old_speed;
+        speed_flag = false;
+    }
 
 
     switch (e.key) {
@@ -227,4 +274,52 @@ window.addEventListener('keydown', e => {
 
 })
 
+ControlBtn.addEventListener('click', (e) => {
 
+    let className = e.target.closest('div').classList.value;
+    let keydown;
+
+    switch (className) {
+        case 'left-top':
+            keydown = new KeyboardEvent('keydown', { key: '2', code: '2', keyCode: 50 });
+            window.dispatchEvent(keydown);
+            break;
+        case 'top':
+            keydown = new KeyboardEvent('keydown', { key: 'ArrowUp', code: 'ArrowUp', keyCode: 38 });
+            window.dispatchEvent(keydown);
+            break;
+        case 'right-top':
+            keydown = new KeyboardEvent('keydown', { key: '4', code: '4', keyCode: 52 });
+            window.dispatchEvent(keydown);
+            break;
+        case 'left':
+            keydown = new KeyboardEvent('keydown', { key: 'ArrowLeft', code: 'ArrowLeft', keyCode: 37 });
+            window.dispatchEvent(keydown);
+            break;
+        case 'middle':
+            keydown = new KeyboardEvent('keydown', { key: ' ', code: 'Space', keyCode: 32 });
+            window.dispatchEvent(keydown);
+            mobile_flag=true;
+            break;
+        case 'right':
+            keydown = new KeyboardEvent('keydown', { key: 'ArrowRight', code: 'ArrowRight', keyCode: 39 });
+            window.dispatchEvent(keydown);
+            break;
+        case 'left-bottom':
+            keydown = new KeyboardEvent('keydown', { key: '3', code: '3', keyCode: 51 });
+            window.dispatchEvent(keydown);
+            break;
+        case 'bottom':
+            keydown = new KeyboardEvent('keydown', { key: 'ArrowDown', code: 'ArrowDown', keyCode: 40 });
+            window.dispatchEvent(keydown);
+            break;
+        case 'right-bottom':
+            keydown = new KeyboardEvent('keydown', { key: '1', code: '1', keyCode: 49 });
+            window.dispatchEvent(keydown);
+            break;
+        default:
+    }
+
+
+
+})
